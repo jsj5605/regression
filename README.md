@@ -202,7 +202,7 @@ e = time.time()
 ```
 ## 5. 학습 시각화
 ```python
-**## train loss, valid loss 의 epoch 별 변화의 흐름 시각화.
+## train loss, valid loss 의 epoch 별 변화의 흐름 시각화.
 plt.plot(range(1, N_EPOCH+1), train_loss_list, label="Train Loss")
 plt.plot(range(1, N_EPOCH+1), valid_loss_list, label="Validation Loss")
 
