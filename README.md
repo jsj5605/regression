@@ -105,9 +105,9 @@ class BostonModel(nn.Module):
         
         out = self.lr3(out) # 출력 레이어(이 값이 모델의 예측값이 된다.)
         # 회귀의 출력결과에는 Activation 함수를 적용하지 않는다.
-        #    예외: 출력값의 범위가 정해져 있고 그 범위값을 출력하는 함수가 있을경우에는 적용 가능
-        #       범위: 0 ~ 1 -> logistic (nn.Sigmoid())
-        #            -1 ~ 1 -> tanh (nn.Tanh())
+        # 예외: 출력값의 범위가 정해져 있고 그 범위값을 출력하는 함수가 있을경우에는 적용 가능
+        # 범위: 0 ~ 1 -> logistic (nn.Sigmoid())
+        #      -1 ~ 1 -> tanh (nn.Tanh())
         return out
 ```
 ### 모델생성
@@ -215,6 +215,50 @@ plt.show()
 ![image](https://github.com/jsj5605/regression/assets/141815934/86c4c37c-1f37-4c1b-8103-491cce4d3b24)
 
 ## 6. 모델 저장
+### 모델 전체 저장 및 불러오기
+```python
+save_path = "models/boston_model.pth"
+torch.save(boston_model, save_path)
+
+load_boston_model = torch.load(save_path)
+torchinfo.summary(load_boston_model, (200, 13))
+
+==========================================================================================
+Layer (type:depth-idx)                   Output Shape              Param #
+==========================================================================================
+BostonModel                              [200, 1]                  --
+├─Linear: 1-1                            [200, 32]                 448
+├─Linear: 1-2                            [200, 16]                 528
+├─Linear: 1-3                            [200, 1]                  17
+==========================================================================================
+Total params: 993
+Trainable params: 993
+Non-trainable params: 0
+Total mult-adds (M): 0.20
+==========================================================================================
+Input size (MB): 0.01
+Forward/backward pass size (MB): 0.08
+Params size (MB): 0.00
+Estimated Total Size (MB): 0.09
+==========================================================================================
+```
+### state dict 저장 및 불러오기
+```python
+# state dict : 모델 파라미터만 저장
+save_path2 = "models/boston_model_statedict.pth"
+# 모델에서 state_dict를 조회
+model_sd = boston_model.state_dict()
+torch.save(model_sd, save_path2)
+
+load_sd = torch.load(save_path2)  
+type(load_sd)
+## 새로운 모델을 생성한 뒤에 파라미터를 변경.
+new_model = BostonModel()
+new_model.load_state_dict(load_sd)
+
+<All keys matched successfully>
+```
+
 
 
 
